@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp");
+
+@mixin font {
+    font-family: 'Montserrat', sans-serif;
+}
+@mixin regular {
+    font-weight: 400;
+}
+@mixin medium {
+    font-weight: 500;
+}
+@mixin bold {
+    font-weight: 700;
+}
+
+h1,h2,h3,h4,h5,h6,p,a{
+    font-family: 'Montserrat', sans-serif;
+    margin-top: 0;
+    margin-bottom: 0;
+    color: $white;
+}
+
+.small{
+    font-size: 14px;
+}
+.result-title{
+    font-size: 16px;
+}
+
+.hero-title{
+    font-size: 56px;
+}
+.title{
+    font-size: 36px;
+}
+.subtitle{
+    font-size: 24px;
+}
+
+.text{
+@include font;
+margin-bottom: 0;
+}
+
+.label{
+color: $white-50;
+}
+
+.medium{
+@include medium;
+}
+.bold{
+@include bold;
+}
+
+.size-20{
+    font-size: 20px;
+}
+
+.size-32{
+    font-size: 32px;
+}
