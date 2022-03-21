@@ -1,38 +1,231 @@
-.App {
+@import url("https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp");
+
+html,
+body {
+  height: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin-top: 0;
+}
+
+.sidebar {
+  position: fixed;
+  width: 260px;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.sidebar:hover {
+  overflow-y: auto;
+}
+.app-container {
+  display: flex;
+  width: calc(100% - 260px);
+  position: relative;
+  margin-left: auto;
+  justify-content: space-between;
+}
+
+#root {
+  height: 100%;
+}
+
+.sidebar-header {
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+}
+.nav-link-playlist {
+  display: flex;
+  align-items: center;
+  padding: 12px 0;
+}
+.nav-link-playlist.active {
+  font-weight: bold;
+}
+
+.sidebar-playlist-list {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 320px;
+}
+.youtube-container-header {
+  position: sticky;
+  top: 0;
+  padding: 24px 16px;
+  background-color: green;
+}
+
+.music-container {
+  width: calc(100% - 420px);
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+.music-image-small {
+  width: 144px;
+}
+.music-image-medium {
+  width: 252px;
+}
+
+.youtube-container {
+  min-width: 420px;
+  max-width: 420px;
+  background-color: red;
+  height: 100%;
+  display: block;
+  min-height: 100vh;
+  position: fixed;
+  top: 0;
+  right: 0;
+  padding: 0 16px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.playlists-grid.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(186px, 280px));
+  grid-template-rows: minmax(282px, auto);
+  grid-gap: 12px;
+}
+
+.playlist-header {
+  display: flex;
+  align-items: end;
+}
+
+.playlist-tracks-row {
+  display: flex;
+}
+
+.playlist-tracks-row span {
+  padding: 16px 0;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+.playlist-tracks-row span:first-child {
+  width: 52px;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.playlist-tracks-row span:nth-child(2) {
+  /* width: 200px; */
+  width: 100%;
+  min-width: 260px;
+  max-width: 400px;
+  align-items: flex-start;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.playlist-tracks-row span:nth-child(3) {
+  min-width: 120px;
+  text-align: center;
+}
+.playlist-tracks-row span:nth-child(4) {
+  margin-left: auto;
 }
 
-.App-header {
-  background-color: #282c34;
+.video-preview {
+  min-width: 420px;
+  max-width: 420px;
+  background-color: blue;
+  height: 100%;
+  display: block;
   min-height: 100vh;
+  position: fixed;
+  padding: 0 16px;
+  box-sizing: border-box;
+  top: 0;
+  z-index: 1;
+  right: 0;
+}
+
+@media screen and (min-width: 1300px) {
+  .playlists-grid.grid {
+    grid-template-columns: repeat(3, minmax(186px, 280px));
+  }
+}
+@media screen and (min-width: 1500px) {
+  .music-container {
+    width: calc(100% - 480px);
+  }
+
+  .youtube-container {
+    min-width: 480px;
+    max-width: 480px;
+  }
+
+  .video-preview {
+    min-width: 480px;
+    max-width: 480px;
+  }
+  .playlists-grid.grid {
+    grid-template-columns: repeat(4, minmax(186px, 280px));
+  }
+}
+@media screen and (min-width: 1700px) {
+  .playlists-grid.grid {
+    grid-template-columns: repeat(5, minmax(186px, 280px));
+  }
+}
+.playlist-grid-item {
+  display: block;
+  padding: 12px;
+  border: 1px solid #000;
+}
+.playlist-grid-item img {
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.grid-item-title {
+  font-size: 14px;
+  font-weight: bold;
+  margin: 0 auto 12px;
+  line-height: 1;
+}
+.grid-item-label {
+  font-size: 12px;
+  line-height: 1;
+}
+
+.header {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  position: sticky;
+  top: 0;
 }
 
-.App-link {
-  color: #61dafb;
+.user-settings {
+  display: inline-block;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.current-user {
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  padding: 8px;
+}
+
+.current-user img {
+  height: 100%;
+  margin-right: 8px;
 }
