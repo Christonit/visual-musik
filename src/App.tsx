@@ -4,23 +4,24 @@ import Sidebar from "./components/sidebar.jsx";
 import Header from "./components/header.jsx";
 
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
-import {useSelector, useDispatch} from "react-redux";
+import {useSelector, useDispatch, RootStateOrAny} from "react-redux";
 import Login from "./views/login.jsx";
 import Dashboard from "./views/dashboard.jsx";
 import Playlist from "./views/playlist.jsx";
 import YoutubeComponent from "./views/youtube-component.jsx";
 import {SpotifyService} from "./services/spotify.service";
 import * as actions from "./actions/index";
+import {RootState, AppDispatch} from "./index";
 
 const spotifyApi = new SpotifyWebApi();
 
 function App() {
     const dispatch = useDispatch();
     const [isVisible, setIsVisible] = useState<boolean>(true);
-    const [user_logged_in, setLogIn] = useState<boolean>(false);
     const [accessToken, setAccessToken] = useState<string | null>(null);
     const [refreshToken, setRefreshToken] = useState<string | null>(null);
-    const user = useSelector(state => state);
+    const is_logged = useSelector((state: RootStateOrAny) => state.logged);
+    const user = useSelector((state: RootStateOrAny) => state.user);
 
     const handleFailure = (error: any) => {
         console.log(error);
@@ -50,12 +51,12 @@ function App() {
     };
 
     const getPlaylists = () => {
-        // spotifyApi.getUserPlaylists(id).then(
-        //     function (data) {
-        //         actions.set_playlists(data.items);
-        //     },
-        //     function (err) {},
-        // );
+        spotifyApi.getUserPlaylists(user.id).then(
+            function (data) {
+                dispatch(actions.set_playlists(data.items));
+            },
+            function (err) {},
+        );
     };
     useEffect(() => {
         const params = getHashParams();
@@ -83,8 +84,7 @@ function App() {
                     function (data) {
                         if (data) {
                             actions.set_user(data);
-                            actions.set_id(data.id);
-                            actions.user_not_logged();
+                            actions.user_is_logged();
                         }
                         return;
                     },
@@ -94,7 +94,6 @@ function App() {
                         }
                     },
                 );
-                getPlaylists();
             }
         };
         setAccessToken(localStorage.getItem("access_token") || "");
@@ -110,15 +109,12 @@ function App() {
                 function (data) {
                     dispatch(actions.set_user(data));
                     dispatch(actions.user_is_logged());
-                    setLogIn(true);
                     return;
                 },
                 function (err) {
                     if (err.status === 401) {
-                        console.log(refreshToken);
                         if (refreshToken === "null" || !refreshToken || refreshToken === null) {
                             dispatch(actions.set_user());
-                            dispatch(actions.set_id());
                             dispatch(actions.user_not_logged());
                             return;
                         }
@@ -128,28 +124,32 @@ function App() {
                     }
                 },
             );
-
-            getPlaylists();
         }
     }, [accessToken, refreshToken, dispatch]);
 
+    useEffect(() => {
+        if (user) {
+            getPlaylists();
+        }
+    }, [user]);
+
     return (
         <>
-            {!user_logged_in && isVisible && <Login />}
+            {!is_logged && isVisible && <Login />}
 
-            {user_logged_in && isVisible && (
+            {is_logged && isVisible && (
                 <Router>
-                    <Sidebar />
+                    {/* <Sidebar /> */}
                     <section className="app-container">
                         <div className="music-container">
                             <Header />
                             <Switch>
-                                <Route exact path="/" component={Dashboard} />
-                                <Route path="/playlist/:playlistId" component={Playlist} />
+                                {/* <Route exact path="/" component={Dashboard} /> */}
+                                {/* <Route path="/playlist/:playlistId" component={Playlist} /> */}
                             </Switch>
                         </div>
 
-                        <YoutubeComponent />
+                        {/* <YoutubeComponent /> */}
                     </section>
                 </Router>
             )}

@@ -10,10 +10,14 @@ import {composeWithDevTools} from "redux-devtools-extension";
 
 import {youtube_list, playlists, active_playlist} from "./reducers/playlists.reducer";
 import {user_info} from "./reducers/user.reducer";
+import {authSession} from "./reducers/session.reducer";
 
-const reducers = combineReducers({youtube_list, playlists, active_playlist, user: user_info});
+const reducers = combineReducers({logged: authSession, playlists: playlists, user: user_info});
 
 const myStore = createStore(reducers, composeWithDevTools());
+
+export type RootState = ReturnType<typeof myStore.getState>;
+export type AppDispatch = typeof myStore.dispatch;
 
 ReactDOM.render(
     <React.StrictMode>

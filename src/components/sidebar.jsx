@@ -3,31 +3,28 @@ import SpotifyWebApi from "spotify-web-api-js";
 import {set_playlists, upate_playlists_by_20, active_playlist} from "../actions";
 import {connect} from "react-redux";
 import {truncateText} from "../utils/lib";
-
+import {useEffect} from "react";
 import {NavLink} from "react-router-dom";
 
 const spotifyApi = new SpotifyWebApi();
 
-class Sidebar extends Component {
-    constructor(props) {
-        super(props);
+const Sidebar = () => {
+    useEffect(() => {
         let access_token = localStorage.getItem("access_token");
         spotifyApi.setAccessToken(access_token);
-        this.setActivePlaylist = this.setActivePlaylist.bind(this);
-    }
-    componentDidMount() {
-        let id = this.props.user_id;
-        let set_playlists = this.props.set_playlists;
+        setActivePlaylist = setActivePlaylist.bind(this);
+        let id = props.user_id;
+        let set_playlists = props.set_playlists;
         spotifyApi.getUserPlaylists(id).then(
             function (data) {
                 set_playlists(data.items);
             },
             function (err) {},
         );
-    }
+    }, []);
 
-    setActivePlaylist(id) {
-        let active_playlist = this.props.active_playlist;
+    const setActivePlaylist = id => {
+        let active_playlist = props.active_playlist;
         let access_token = localStorage.getItem("access_token");
         console.log(id);
         let header = {
@@ -49,49 +46,43 @@ class Sidebar extends Component {
 
                 active_playlist(info);
             });
-    }
+    };
 
-    render() {
-        const {playlists} = this.props;
-        return (
-            <div className="sidebar">
-                <div className="sidebar-header">
-                    <a href="#" className="branding text-center">
-                        <img src="https://via.placeholder.com/120x40" alt="Visual Musik Logo" />
-                    </a>
+    const {playlists} = props;
+    return (
+        <div className="sidebar">
+            <div className="sidebar-header">
+                <a href="#" className="branding text-center">
+                    <img src="https://via.placeholder.com/120x40" alt="Visual Musik Logo" />
+                </a>
 
-                    <NavLink to="/" className="nav-link ">
-                        <span className="material-icons mr--8 size-32" alt="Visual Musik Logo">
-                            playlist_play
-                        </span>
-                        {/* <img src="https://via.placeholder.com/20x20" className="mr--12" alt="Visual Musik Logo" />  */}
-                        Your playlists
-                    </NavLink>
-                </div>
-
-                <div className="sidebar-playlist-list">
-                    {playlists &&
-                        playlists.map((item, key) => {
-                            let name = item.name.toLocaleLowerCase().split("/");
-                            name = name.join("").split(" ").join("-");
-
-                            return (
-                                <NavLink
-                                    className="nav-link-playlist"
-                                    key={key}
-                                    id={item.id}
-                                    to={`/playlist/${item.id}`}>
-                                    {truncateText(item.name, 24)}
-                                </NavLink>
-                            );
-                        })}
-                </div>
-
-                <div className="playback-container"></div>
+                <NavLink to="/" className="nav-link ">
+                    <span className="material-icons mr--8 size-32" alt="Visual Musik Logo">
+                        playlist_play
+                    </span>
+                    {/* <img src="https://via.placeholder.com/20x20" className="mr--12" alt="Visual Musik Logo" />  */}
+                    Your playlists
+                </NavLink>
             </div>
-        );
-    }
-}
+
+            <div className="sidebar-playlist-list">
+                {playlists &&
+                    playlists.map((item, key) => {
+                        let name = item.name.toLocaleLowerCase().split("/");
+                        name = name.join("").split(" ").join("-");
+
+                        return (
+                            <NavLink className="nav-link-playlist" key={key} id={item.id} to={`/playlist/${item.id}`}>
+                                {truncateText(item.name, 24)}
+                            </NavLink>
+                        );
+                    })}
+            </div>
+
+            <div className="playback-container"></div>
+        </div>
+    );
+};
 
 const mapDispatchToProps = {
     set_playlists,

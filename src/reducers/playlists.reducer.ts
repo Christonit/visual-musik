@@ -38,7 +38,22 @@ interface youtubeI {
     date: string,
     thumbnail : string 
 }  
-
+ interface playlistI {
+    id : string,
+    cover_image : string,
+    title: string,
+    owner : string,
+    size: number
+ }
+ interface spotifyPlaylistI {
+    id : string,
+    images : {height: number, width: number, url : string}[],
+    name: string,
+    owner : {
+        display_name : string
+    },
+    tracks: {total: number}
+ }
 export interface ActivePlaylistsReducerI  {
     type : string,
     payload : ActivePlaylistI
@@ -59,15 +74,17 @@ export const youtube_list = (state: youtubeI[] = [], action : YoutubeListReducer
     }
 };
 
-export const playlists = (state : any[] = [], action : { type: string, payload : any[]} ) => {
+export const playlists = (state : playlistI[] = [], action : { type: string, payload : playlistI[]} ) => {
+    
     switch (action.type) {
       case SET_PLAYLISTS:
-        return  action.payload;
+        return  [...action.payload];
       case UPDATE_BY_20:
         return [...state, ...action.payload];
       default:
         return state;
     }
+    
   };
   
 export const active_playlist = (state  : ActivePlaylistI | null, action : ActivePlaylistsReducerI) => {

@@ -19,11 +19,16 @@ export const CLEAR_LIST = "PLAYLIST/CLEAR_LIST";
 type actionI = 
   {type : string, payload: userInfoI}
 
-
-export const user_info = (state : userInfoI, action : actionI) => {
+type initialStateI = {
+  user : userInfoI | null
+}
+const initialState : initialStateI  = {
+  user : null 
+}
+export const user_info = (state = null, action : actionI) => {
   switch (action.type) {
     case SET_USER:
-      return (state = action.payload);
+      return action.payload;
     default:
       return state;
   }
